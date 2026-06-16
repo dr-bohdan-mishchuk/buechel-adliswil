@@ -5,10 +5,33 @@ import { Footer } from "@/components/site/Footer";
 import { Wheel } from "@/components/site/Wheel";
 import { DISHES, CATEGORIES, TAG_LABEL } from "@/lib/menu-data";
 import { RESTAURANT } from "@/lib/restaurant";
-import heroImg from "@/assets/hero-cordon-bleu.jpg";
-import pizzaImg from "@/assets/dish-pizza.jpg";
-import pastaImg from "@/assets/dish-pasta.jpg";
-import steakImg from "@/assets/dish-steak.jpg";
+import heroAsset from "@/assets/hero-cordon-bleu.png.asset.json";
+import pizzaAsset from "@/assets/dish-pizza.jpg.asset.json";
+import pastaAsset from "@/assets/dish-pasta.webp.asset.json";
+import steakAsset from "@/assets/dish-steak.jpg.asset.json";
+import cordonAsset from "@/assets/dish-cordon.png.asset.json";
+const heroImg = heroAsset.url;
+const pizzaImg = pizzaAsset.url;
+const pastaImg = pastaAsset.url;
+const steakImg = steakAsset.url;
+const cordonImg = cordonAsset.url;
+
+const HOMEPAGE_CATEGORIES = [
+  { id: "pizza32" as const, label: "Pizza vom Holzofen", img: pizzaImg },
+  { id: "pasta" as const, label: "Pasta & Gnocchi", img: pastaImg },
+  { id: "cordon" as const, label: "Cordon Bleu Parade", img: cordonImg },
+  { id: "fleisch" as const, label: "Fleischparade", img: steakImg },
+  { id: "fisch" as const, label: "Fischgerichte", img: heroImg },
+  { id: "dessert" as const, label: "Dolci", img: pastaImg },
+];
+
+function imgForCategory(cat: string): string {
+  if (cat.startsWith("pizza")) return pizzaImg;
+  if (cat.startsWith("pasta") || cat === "risotto") return pastaImg;
+  if (cat === "cordon") return cordonImg;
+  if (cat === "fleisch" || cat === "fisch") return steakImg;
+  return heroImg;
+}
 
 const FAQS = [
   {
