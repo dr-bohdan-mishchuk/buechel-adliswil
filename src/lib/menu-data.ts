@@ -147,7 +147,7 @@ export const DISHES: Dish[] = [
 
   // Die Lieblinge
   d("penne-chef", "Penne nach Chef Art", "Zarte Rindsfiletwürfel in Olivenöl gebraten, Cherry Tomaten, Taleggio Käse, Zwiebeln, Knoblauch, Rahm und Rucola", 28.5, "pasta-lieblinge", ["signature"]),
-  d("tagl-thai", "Tagliatelle „Thai Curry"", "Gebratene Pouletbrustwürfel, Gemüse, Kokos-Sojasauce, grünes Thai Curry, Ingwer und Zitronengras", 26.5, "pasta-lieblinge", ["scharf"]),
+  d("tagl-thai", "Tagliatelle „Thai Curry“", "Gebratene Pouletbrustwürfel, Gemüse, Kokos-Sojasauce, grünes Thai Curry, Ingwer und Zitronengras", 26.5, "pasta-lieblinge", ["scharf"]),
   d("tagl-salmone", "Tagliatelle Salmone", "Tomatenrahmsauce, Zwiebeln, Knoblauch, Basilikum und Lachsfilet", 25.5, "pasta-lieblinge", ["fisch"]),
 
   // Risotto
@@ -170,14 +170,14 @@ export const DISHES: Dish[] = [
   d("fl-schweinssteak", "Gegrilltes Schweinssteak", "Beilage nach Wahl", 30.5, "fleisch", ["fleisch"]),
 
   // Cordon Bleu
-  d("cb-kalb-klassiker", "Kalbs Cordon Bleu „Klassiker"", "Gefüllt mit Schinken, Gruyère und eine Beilage nach Wahl", 39.5, "cordon", ["signature"]),
-  d("cb-kalb-fiorentina", "Kalbs Cordon Bleu „Fiorentina"", "Gefüllt mit Spinat, Mascarpone und eine Beilage nach Wahl", 39.5, "cordon"),
-  d("cb-schwein-klassiker", "Schweins Cordon Bleu „Der Klassiker"", "Gefüllt mit Schinken, Gruyère und eine Beilage nach Wahl", 27.5, "cordon", ["signature"]),
-  d("cb-schwein-buechel", "Schweins Cordon Bleu „Büchel"", "Gefüllt mit Speck, Zwiebeln, Tomaten, Gruyère und eine Beilage nach Wahl", 29.5, "cordon", ["signature"]),
-  d("cb-schwein-adliswil", "Schweins Cordon Bleu „Adliswil"", "Gefüllt mit Steinpilzen, Champignons, Raclettekäse und eine Beilage nach Wahl", 30.5, "cordon", ["signature"]),
-  d("cb-schwein-alaz", "Schweins Cordon Bleu „Alaz" (scharf)", "Gefüllt mit scharfer Salami, Gorgonzola und eine Beilage nach Wahl", 29.5, "cordon", ["scharf"]),
-  d("cb-poulet-klassiker", "Poulet Cordon Bleu „Der Klassiker"", "Gefüllt mit Schinken, Gruyère und eine Beilage nach Wahl", 29.5, "cordon"),
-  d("cb-poulet-hawaii", "Poulet Cordon Bleu „Hawaii"", "Gefüllt mit Schinken, Ananas, Gruyère und eine Beilage nach Wahl", 29.5, "cordon"),
+  d("cb-kalb-klassiker", "Kalbs Cordon Bleu „Klassiker“", "Gefüllt mit Schinken, Gruyère und eine Beilage nach Wahl", 39.5, "cordon", ["signature"]),
+  d("cb-kalb-fiorentina", "Kalbs Cordon Bleu „Fiorentina“", "Gefüllt mit Spinat, Mascarpone und eine Beilage nach Wahl", 39.5, "cordon"),
+  d("cb-schwein-klassiker", "Schweins Cordon Bleu „Der Klassiker“", "Gefüllt mit Schinken, Gruyère und eine Beilage nach Wahl", 27.5, "cordon", ["signature"]),
+  d("cb-schwein-buechel", "Schweins Cordon Bleu „Büchel“", "Gefüllt mit Speck, Zwiebeln, Tomaten, Gruyère und eine Beilage nach Wahl", 29.5, "cordon", ["signature"]),
+  d("cb-schwein-adliswil", "Schweins Cordon Bleu „Adliswil“", "Gefüllt mit Steinpilzen, Champignons, Raclettekäse und eine Beilage nach Wahl", 30.5, "cordon", ["signature"]),
+  d("cb-schwein-alaz", "Schweins Cordon Bleu „Alaz“ (scharf)", "Gefüllt mit scharfer Salami, Gorgonzola und eine Beilage nach Wahl", 29.5, "cordon", ["scharf"]),
+  d("cb-poulet-klassiker", "Poulet Cordon Bleu „Der Klassiker“", "Gefüllt mit Schinken, Gruyère und eine Beilage nach Wahl", 29.5, "cordon"),
+  d("cb-poulet-hawaii", "Poulet Cordon Bleu „Hawaii“", "Gefüllt mit Schinken, Ananas, Gruyère und eine Beilage nach Wahl", 29.5, "cordon"),
 
   // Fisch
   d("fi-egli", "Eglifilet", "Mandeln in Butter gebraten und eine Beilage nach Wahl", 34.5, "fisch", ["fisch"]),
