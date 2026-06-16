@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { Wheel } from "@/components/site/Wheel";
-import { DISHES, CATEGORIES, TAG_LABEL } from "@/lib/menu-data";
+import { DISHES, TAG_LABEL } from "@/lib/menu-data";
 import { RESTAURANT } from "@/lib/restaurant";
 import heroAsset from "@/assets/hero-cordon-bleu.png.asset.json";
 import pizzaAsset from "@/assets/dish-pizza.jpg.asset.json";
