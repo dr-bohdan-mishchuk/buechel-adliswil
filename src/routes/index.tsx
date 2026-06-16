@@ -298,11 +298,15 @@ function Index() {
             </Link>
             <a
               href={RESTAURANT.phoneHref}
-              className="inline-flex h-12 items-center rounded-full border border-surface/30 px-7 text-sm font-semibold text-surface hover:bg-surface/10"
+              className="inline-flex h-12 items-center gap-3 rounded-full border border-surface/30 px-7 text-sm font-semibold text-surface hover:bg-surface/10"
             >
-              Lieber anrufen
+              <span>Lieber anrufen</span>
+              <span className="font-mono text-ember">{RESTAURANT.phone}</span>
             </a>
           </div>
+          <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-surface/50">
+            Auf dem Mobiltelefon öffnet ein Tap die Wähltastatur.
+          </p>
         </div>
       </section>
 
@@ -315,7 +319,7 @@ function Index() {
           Sechs Kategorien. Ein Versprechen.
         </h2>
         <div className="mt-10 grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {CATEGORIES.map((c) => {
+          {HOMEPAGE_CATEGORIES.map((c) => {
             const count = DISHES.filter((d) => d.category === c.id).length;
             return (
               <Link
