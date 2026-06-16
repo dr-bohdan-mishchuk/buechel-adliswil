@@ -227,7 +227,7 @@ function Index() {
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {signatures.map((d, i) => {
-            const img = d.category === "pizza" ? pizzaImg : d.category === "pasta" ? pastaImg : d.category === "steak" ? steakImg : heroImg;
+            const img = imgForCategory(d.category);
             return (
               <motion.article
                 key={d.slug}
