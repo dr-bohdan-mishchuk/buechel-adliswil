@@ -158,16 +158,24 @@ function Index() {
             transition={{ delay: 0.45 }}
             className="mt-8 flex flex-wrap gap-3"
           >
-            <Link
-              to="/reservation"
+            <a
+              href={RESTAURANT.orderUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex h-12 items-center gap-2 rounded-full bg-brick px-6 text-sm font-semibold text-brick-foreground shadow-elegant transition-all hover:bg-ember"
             >
-              Tisch sichern
+              Essen bestellen
               <span className="transition-transform group-hover:translate-x-0.5">→</span>
+            </a>
+            <Link
+              to="/reservation"
+              className="inline-flex h-12 items-center rounded-full border border-surface/30 bg-surface/10 px-6 text-sm font-semibold text-surface backdrop-blur-sm hover:bg-surface/20"
+            >
+              Tisch sichern
             </Link>
             <Link
               to="/menu"
-              className="inline-flex h-12 items-center rounded-full border border-surface/30 bg-surface/10 px-6 text-sm font-semibold text-surface backdrop-blur-sm hover:bg-surface/20"
+              className="inline-flex h-12 items-center rounded-full border border-surface/20 px-6 text-sm font-semibold text-surface/90 hover:bg-surface/10"
             >
               Menü öffnen
             </Link>
