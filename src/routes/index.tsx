@@ -3,12 +3,35 @@ import { motion } from "motion/react";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { Wheel } from "@/components/site/Wheel";
-import { DISHES, CATEGORIES, TAG_LABEL } from "@/lib/menu-data";
+import { DISHES, TAG_LABEL } from "@/lib/menu-data";
 import { RESTAURANT } from "@/lib/restaurant";
-import heroImg from "@/assets/hero-cordon-bleu.jpg";
-import pizzaImg from "@/assets/dish-pizza.jpg";
-import pastaImg from "@/assets/dish-pasta.jpg";
-import steakImg from "@/assets/dish-steak.jpg";
+import heroAsset from "@/assets/hero-cordon-bleu.png.asset.json";
+import pizzaAsset from "@/assets/dish-pizza.jpg.asset.json";
+import pastaAsset from "@/assets/dish-pasta.webp.asset.json";
+import steakAsset from "@/assets/dish-steak.jpg.asset.json";
+import cordonAsset from "@/assets/dish-cordon.png.asset.json";
+const heroImg = heroAsset.url;
+const pizzaImg = pizzaAsset.url;
+const pastaImg = pastaAsset.url;
+const steakImg = steakAsset.url;
+const cordonImg = cordonAsset.url;
+
+const HOMEPAGE_CATEGORIES = [
+  { id: "pizza32" as const, label: "Pizza vom Holzofen", img: pizzaImg },
+  { id: "pasta" as const, label: "Pasta & Gnocchi", img: pastaImg },
+  { id: "cordon" as const, label: "Cordon Bleu Parade", img: cordonImg },
+  { id: "fleisch" as const, label: "Fleischparade", img: steakImg },
+  { id: "fisch" as const, label: "Fischgerichte", img: heroImg },
+  { id: "dessert" as const, label: "Dolci", img: pastaImg },
+];
+
+function imgForCategory(cat: string): string {
+  if (cat.startsWith("pizza")) return pizzaImg;
+  if (cat.startsWith("pasta") || cat === "risotto") return pastaImg;
+  if (cat === "cordon") return cordonImg;
+  if (cat === "fleisch" || cat === "fisch") return steakImg;
+  return heroImg;
+}
 
 const FAQS = [
   {
@@ -135,16 +158,24 @@ function Index() {
             transition={{ delay: 0.45 }}
             className="mt-8 flex flex-wrap gap-3"
           >
-            <Link
-              to="/reservation"
+            <a
+              href={RESTAURANT.orderUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex h-12 items-center gap-2 rounded-full bg-brick px-6 text-sm font-semibold text-brick-foreground shadow-elegant transition-all hover:bg-ember"
             >
-              Tisch sichern
+              Essen bestellen
               <span className="transition-transform group-hover:translate-x-0.5">→</span>
+            </a>
+            <Link
+              to="/reservation"
+              className="inline-flex h-12 items-center rounded-full border border-surface/30 bg-surface/10 px-6 text-sm font-semibold text-surface backdrop-blur-sm hover:bg-surface/20"
+            >
+              Tisch sichern
             </Link>
             <Link
               to="/menu"
-              className="inline-flex h-12 items-center rounded-full border border-surface/30 bg-surface/10 px-6 text-sm font-semibold text-surface backdrop-blur-sm hover:bg-surface/20"
+              className="inline-flex h-12 items-center rounded-full border border-surface/20 px-6 text-sm font-semibold text-surface/90 hover:bg-surface/10"
             >
               Menü öffnen
             </Link>
@@ -204,7 +235,7 @@ function Index() {
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {signatures.map((d, i) => {
-            const img = d.category === "pizza" ? pizzaImg : d.category === "pasta" ? pastaImg : d.category === "steak" ? steakImg : heroImg;
+            const img = imgForCategory(d.category);
             return (
               <motion.article
                 key={d.slug}
@@ -267,11 +298,15 @@ function Index() {
             </Link>
             <a
               href={RESTAURANT.phoneHref}
-              className="inline-flex h-12 items-center rounded-full border border-surface/30 px-7 text-sm font-semibold text-surface hover:bg-surface/10"
+              className="inline-flex h-12 items-center gap-3 rounded-full border border-surface/30 px-7 text-sm font-semibold text-surface hover:bg-surface/10"
             >
-              Lieber anrufen
+              <span>Lieber anrufen</span>
+              <span className="font-mono text-ember">{RESTAURANT.phone}</span>
             </a>
           </div>
+          <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-surface/50">
+            Auf dem Mobiltelefon öffnet ein Tap die Wähltastatur.
+          </p>
         </div>
       </section>
 
@@ -284,7 +319,7 @@ function Index() {
           Sechs Kategorien. Ein Versprechen.
         </h2>
         <div className="mt-10 grid gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {CATEGORIES.map((c) => {
+          {HOMEPAGE_CATEGORIES.map((c) => {
             const count = DISHES.filter((d) => d.category === c.id).length;
             return (
               <Link

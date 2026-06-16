@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { RESTAURANT } from "@/lib/restaurant";
 
 const links = [
   { to: "/menu", label: "Menü" },
@@ -48,6 +49,14 @@ export function Nav() {
               {l.label}
             </Link>
           ))}
+          <a
+            href={RESTAURANT.orderUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-10 items-center rounded-full border border-ink/15 px-4 text-sm font-medium text-ink transition-colors hover:border-brick hover:text-brick"
+          >
+            Essen bestellen
+          </a>
           <Link
             to="/reservation"
             className="inline-flex h-10 items-center rounded-full bg-brick px-5 text-sm font-medium text-brick-foreground shadow-sm transition-all hover:bg-brick/90 hover:shadow"
@@ -89,10 +98,19 @@ export function Nav() {
                 {l.label}
               </Link>
             ))}
+            <a
+              href={RESTAURANT.orderUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="mt-2 inline-flex h-11 items-center justify-center rounded-full border border-ink/15 px-5 text-sm font-medium text-ink"
+            >
+              Essen bestellen
+            </a>
             <Link
               to="/reservation"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex h-11 items-center justify-center rounded-full bg-brick px-5 text-sm font-medium text-brick-foreground"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-brick px-5 text-sm font-medium text-brick-foreground"
             >
               Tisch sichern
             </Link>
