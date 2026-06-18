@@ -10,27 +10,48 @@ import pizzaAsset from "@/assets/dish-pizza.jpg.asset.json";
 import pastaAsset from "@/assets/dish-pasta.webp.asset.json";
 import steakAsset from "@/assets/dish-steak.jpg.asset.json";
 import cordonAsset from "@/assets/dish-cordon.png.asset.json";
+import fischAsset from "@/assets/dish-fisch.jpg.asset.json";
+import dessertAsset from "@/assets/dish-dessert.jpg.asset.json";
+import salatAsset from "@/assets/dish-salat.jpg.asset.json";
+import risottoAsset from "@/assets/dish-risotto.jpg.asset.json";
 const heroImg = heroAsset.url;
 const pizzaImg = pizzaAsset.url;
 const pastaImg = pastaAsset.url;
 const steakImg = steakAsset.url;
 const cordonImg = cordonAsset.url;
+const fischImg = fischAsset.url;
+const dessertImg = dessertAsset.url;
+const salatImg = salatAsset.url;
+const risottoImg = risottoAsset.url;
 
 const HOMEPAGE_CATEGORIES = [
   { id: "pizza32" as const, label: "Pizza vom Holzofen", img: pizzaImg },
   { id: "pasta" as const, label: "Pasta & Gnocchi", img: pastaImg },
   { id: "cordon" as const, label: "Cordon Bleu Parade", img: cordonImg },
   { id: "fleisch" as const, label: "Fleischparade", img: steakImg },
-  { id: "fisch" as const, label: "Fischgerichte", img: heroImg },
-  { id: "dessert" as const, label: "Dolci", img: pastaImg },
+  { id: "fisch" as const, label: "Fischgerichte", img: fischImg },
+  { id: "dessert" as const, label: "Dolci", img: dessertImg },
 ];
 
+const CATEGORY_IMG: Record<string, string> = {
+  vorspeise: salatImg,
+  salat: salatImg,
+  "pizza-pickup": pizzaImg,
+  pizza32: pizzaImg,
+  pizza40: pizzaImg,
+  "pizza-spezial": pizzaImg,
+  pasta: pastaImg,
+  "pasta-lieblinge": pastaImg,
+  risotto: risottoImg,
+  fleisch: steakImg,
+  cordon: cordonImg,
+  fisch: fischImg,
+  spezial: salatImg,
+  dessert: dessertImg,
+};
+
 function imgForCategory(cat: string): string {
-  if (cat.startsWith("pizza")) return pizzaImg;
-  if (cat.startsWith("pasta") || cat === "risotto") return pastaImg;
-  if (cat === "cordon") return cordonImg;
-  if (cat === "fleisch" || cat === "fisch") return steakImg;
-  return heroImg;
+  return CATEGORY_IMG[cat] ?? heroImg;
 }
 
 const FAQS = [
