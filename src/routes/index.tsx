@@ -14,6 +14,13 @@ import fischAsset from "@/assets/dish-fisch.jpg.asset.json";
 import dessertAsset from "@/assets/dish-dessert.jpg.asset.json";
 import salatAsset from "@/assets/dish-salat.jpg.asset.json";
 import risottoAsset from "@/assets/dish-risotto.jpg.asset.json";
+import margheritaAsset from "@/assets/dish-margherita.jpg.asset.json";
+import buttafuocoAsset from "@/assets/dish-buttafuoco.jpg.asset.json";
+import prosciuttoAsset from "@/assets/dish-prosciutto.jpg.asset.json";
+import calzoneVegiAsset from "@/assets/dish-calzone-vegi.jpg.asset.json";
+import calzoneVealAsset from "@/assets/dish-calzone-veal.jpg.asset.json";
+import spaghettiBuechelAsset from "@/assets/dish-spaghetti-buechel.jpg.asset.json";
+
 const heroImg = heroAsset.url;
 const pizzaImg = pizzaAsset.url;
 const pastaImg = pastaAsset.url;
@@ -33,6 +40,16 @@ const HOMEPAGE_CATEGORIES = [
   { id: "dessert" as const, label: "Dolci", img: dessertImg },
 ];
 
+// Per-dish unique images — overrides category fallback so no two cards share a photo.
+const DISH_IMG: Record<string, string> = {
+  "pizza32-pizza-margherita-o32": margheritaAsset.url,
+  "pizza32-pizza-buttafuoco-scharf-o32": buttafuocoAsset.url,
+  "pizza32-pizza-prosciutto-crudo-o32": prosciuttoAsset.url,
+  "pizza-spezial-pizza-vegi-insel-zugedeckt-o32": calzoneVegiAsset.url,
+  "pizza-spezial-pizza-alaz-insel-zugedeckt-o32": calzoneVealAsset.url,
+  "pasta-spaghetti-buechel": spaghettiBuechelAsset.url,
+};
+
 const CATEGORY_IMG: Record<string, string> = {
   vorspeise: salatImg,
   salat: salatImg,
@@ -50,8 +67,8 @@ const CATEGORY_IMG: Record<string, string> = {
   dessert: dessertImg,
 };
 
-function imgForCategory(cat: string): string {
-  return CATEGORY_IMG[cat] ?? heroImg;
+function imgForDish(slug: string, category: string): string {
+  return DISH_IMG[slug] ?? CATEGORY_IMG[category] ?? heroImg;
 }
 
 const FAQS = [
