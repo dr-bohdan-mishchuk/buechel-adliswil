@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { RESTAURANT } from "@/lib/restaurant";
+import logoAsset from "@/assets/logo.png.asset.json";
+const logoUrl = logoAsset.url;
 
 const links = [
   { to: "/menu", label: "Menü" },
@@ -29,10 +31,14 @@ export function Nav() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-8">
-        <Link to="/" className="group flex items-baseline gap-1.5">
-          <span className="font-display text-2xl font-semibold tracking-tight text-ink">
-            Büchel
-          </span>
+        <Link to="/" className="group flex items-center gap-3">
+          <img
+            src={logoUrl}
+            alt="Restaurant Büchel Logo"
+            width={44}
+            height={44}
+            className="h-10 w-auto md:h-11"
+          />
           <span className="hidden text-[10px] uppercase tracking-[0.25em] text-ink-soft sm:inline">
             Adliswil · seit 1998
           </span>
