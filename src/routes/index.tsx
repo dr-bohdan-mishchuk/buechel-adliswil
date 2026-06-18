@@ -464,6 +464,90 @@ function Index() {
         </div>
       </section>
 
+      {/* MAP / FINDEN */}
+      <section className="border-t border-border bg-surface-alt">
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:px-8 lg:py-28">
+          <div className="flex flex-col justify-center">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-brick">
+              So findest Du uns
+            </p>
+            <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-ink md:text-5xl">
+              Albisstrasse 90, mitten in Adliswil.
+            </h2>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-ink-soft">
+              5 Gehminuten vom Bahnhof Adliswil. Parkplätze direkt vor dem Haus.
+              Tap auf die Karte — Google Maps öffnet die Route.
+            </p>
+            <dl className="mt-8 grid gap-3 text-sm">
+              <div className="flex gap-3">
+                <dt className="w-24 shrink-0 font-mono text-[11px] uppercase tracking-widest text-ink-soft">
+                  Adresse
+                </dt>
+                <dd className="text-ink">
+                  {RESTAURANT.street}, {RESTAURANT.postal} {RESTAURANT.city}
+                </dd>
+              </div>
+              <div className="flex gap-3">
+                <dt className="w-24 shrink-0 font-mono text-[11px] uppercase tracking-widest text-ink-soft">
+                  Telefon
+                </dt>
+                <dd>
+                  <a href={RESTAURANT.phoneHref} className="text-brick hover:underline">
+                    {RESTAURANT.phone}
+                  </a>
+                </dd>
+              </div>
+              <div className="flex gap-3">
+                <dt className="w-24 shrink-0 font-mono text-[11px] uppercase tracking-widest text-ink-soft">
+                  ÖV
+                </dt>
+                <dd className="text-ink">S4 Adliswil · Bus 184 / 185</dd>
+              </div>
+            </dl>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${RESTAURANT.geo.lat},${RESTAURANT.geo.lng}&destination_place_id=${encodeURIComponent(RESTAURANT.name)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-11 items-center gap-2 rounded-full bg-brick px-5 text-sm font-semibold text-brick-foreground hover:bg-ember"
+              >
+                Route planen →
+              </a>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${RESTAURANT.geo.lat},${RESTAURANT.geo.lng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-11 items-center rounded-full border border-border bg-card px-5 text-sm font-semibold text-ink hover:bg-surface"
+              >
+                In Google Maps öffnen
+              </a>
+            </div>
+          </div>
+
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${RESTAURANT.geo.lat},${RESTAURANT.geo.lng}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Route zu Restaurant Büchel in Google Maps öffnen"
+            className="group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border shadow-card transition-shadow hover:shadow-elegant"
+          >
+            <iframe
+              title="Karte — Restaurant Büchel, Albisstrasse 90, 8134 Adliswil"
+              src={`https://www.google.com/maps?q=${RESTAURANT.geo.lat},${RESTAURANT.geo.lng}&z=16&output=embed`}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="pointer-events-none h-full w-full border-0"
+            />
+            <span className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-gradient-to-t from-ink/85 via-ink/40 to-transparent px-5 py-4 text-sm font-semibold text-surface">
+              <span>Restaurant Büchel · Albisstrasse 90</span>
+              <span className="rounded-full bg-brick px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-brick-foreground transition-transform group-hover:translate-x-0.5">
+                Route →
+              </span>
+            </span>
+          </a>
+        </div>
+      </section>
+
       <Footer />
       <Wheel />
     </div>
