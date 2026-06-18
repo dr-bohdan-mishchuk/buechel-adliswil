@@ -14,6 +14,13 @@ import fischAsset from "@/assets/dish-fisch.jpg.asset.json";
 import dessertAsset from "@/assets/dish-dessert.jpg.asset.json";
 import salatAsset from "@/assets/dish-salat.jpg.asset.json";
 import risottoAsset from "@/assets/dish-risotto.jpg.asset.json";
+import margheritaAsset from "@/assets/dish-margherita.jpg.asset.json";
+import buttafuocoAsset from "@/assets/dish-buttafuoco.jpg.asset.json";
+import prosciuttoAsset from "@/assets/dish-prosciutto.jpg.asset.json";
+import calzoneVegiAsset from "@/assets/dish-calzone-vegi.jpg.asset.json";
+import calzoneVealAsset from "@/assets/dish-calzone-veal.jpg.asset.json";
+import spaghettiBuechelAsset from "@/assets/dish-spaghetti-buechel.jpg.asset.json";
+
 const heroImg = heroAsset.url;
 const pizzaImg = pizzaAsset.url;
 const pastaImg = pastaAsset.url;
@@ -33,6 +40,16 @@ const HOMEPAGE_CATEGORIES = [
   { id: "dessert" as const, label: "Dolci", img: dessertImg },
 ];
 
+// Per-dish unique images — overrides category fallback so no two cards share a photo.
+const DISH_IMG: Record<string, string> = {
+  "pizza32-pizza-margherita-o32": margheritaAsset.url,
+  "pizza32-pizza-buttafuoco-scharf-o32": buttafuocoAsset.url,
+  "pizza32-pizza-prosciutto-crudo-o32": prosciuttoAsset.url,
+  "pizza-spezial-pizza-vegi-insel-zugedeckt-o32": calzoneVegiAsset.url,
+  "pizza-spezial-pizza-alaz-insel-zugedeckt-o32": calzoneVealAsset.url,
+  "pasta-spaghetti-buechel": spaghettiBuechelAsset.url,
+};
+
 const CATEGORY_IMG: Record<string, string> = {
   vorspeise: salatImg,
   salat: salatImg,
@@ -50,8 +67,8 @@ const CATEGORY_IMG: Record<string, string> = {
   dessert: dessertImg,
 };
 
-function imgForCategory(cat: string): string {
-  return CATEGORY_IMG[cat] ?? heroImg;
+function imgForDish(slug: string, category: string): string {
+  return DISH_IMG[slug] ?? CATEGORY_IMG[category] ?? heroImg;
 }
 
 const FAQS = [
@@ -256,7 +273,7 @@ function Index() {
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {signatures.map((d, i) => {
-            const img = imgForCategory(d.category);
+            const img = imgForDish(d.slug, d.category);
             return (
               <motion.article
                 key={d.slug}
@@ -444,6 +461,90 @@ function Index() {
               Alle Fragen ansehen →
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* MAP / FINDEN */}
+      <section className="border-t border-border bg-surface-alt">
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:px-8 lg:py-28">
+          <div className="flex flex-col justify-center">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-brick">
+              So findest Du uns
+            </p>
+            <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-ink md:text-5xl">
+              Albisstrasse 90, mitten in Adliswil.
+            </h2>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-ink-soft">
+              5 Gehminuten vom Bahnhof Adliswil. Parkplätze direkt vor dem Haus.
+              Tap auf die Karte — Google Maps öffnet die Route.
+            </p>
+            <dl className="mt-8 grid gap-3 text-sm">
+              <div className="flex gap-3">
+                <dt className="w-24 shrink-0 font-mono text-[11px] uppercase tracking-widest text-ink-soft">
+                  Adresse
+                </dt>
+                <dd className="text-ink">
+                  {RESTAURANT.street}, {RESTAURANT.postal} {RESTAURANT.city}
+                </dd>
+              </div>
+              <div className="flex gap-3">
+                <dt className="w-24 shrink-0 font-mono text-[11px] uppercase tracking-widest text-ink-soft">
+                  Telefon
+                </dt>
+                <dd>
+                  <a href={RESTAURANT.phoneHref} className="text-brick hover:underline">
+                    {RESTAURANT.phone}
+                  </a>
+                </dd>
+              </div>
+              <div className="flex gap-3">
+                <dt className="w-24 shrink-0 font-mono text-[11px] uppercase tracking-widest text-ink-soft">
+                  ÖV
+                </dt>
+                <dd className="text-ink">S4 Adliswil · Bus 184 / 185</dd>
+              </div>
+            </dl>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${RESTAURANT.geo.lat},${RESTAURANT.geo.lng}&destination_place_id=${encodeURIComponent(RESTAURANT.name)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-11 items-center gap-2 rounded-full bg-brick px-5 text-sm font-semibold text-brick-foreground hover:bg-ember"
+              >
+                Route planen →
+              </a>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${RESTAURANT.geo.lat},${RESTAURANT.geo.lng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-11 items-center rounded-full border border-border bg-card px-5 text-sm font-semibold text-ink hover:bg-surface"
+              >
+                In Google Maps öffnen
+              </a>
+            </div>
+          </div>
+
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${RESTAURANT.geo.lat},${RESTAURANT.geo.lng}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Route zu Restaurant Büchel in Google Maps öffnen"
+            className="group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border shadow-card transition-shadow hover:shadow-elegant"
+          >
+            <iframe
+              title="Karte — Restaurant Büchel, Albisstrasse 90, 8134 Adliswil"
+              src={`https://www.google.com/maps?q=${RESTAURANT.geo.lat},${RESTAURANT.geo.lng}&z=16&output=embed`}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="pointer-events-none h-full w-full border-0"
+            />
+            <span className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-gradient-to-t from-ink/85 via-ink/40 to-transparent px-5 py-4 text-sm font-semibold text-surface">
+              <span>Restaurant Büchel · Albisstrasse 90</span>
+              <span className="rounded-full bg-brick px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-brick-foreground transition-transform group-hover:translate-x-0.5">
+                Route →
+              </span>
+            </span>
+          </a>
         </div>
       </section>
 
