@@ -2,14 +2,14 @@ import { motion, useAnimationControls } from "motion/react";
 import { useEffect, useState } from "react";
 
 const PRIZES = [
-  { label: "Tiramisù gratis", code: "TIRAMISU", weight: 18, color: "var(--color-brick)" },
-  { label: "10% auf Lieferung", code: "LIEFERN10", weight: 22, color: "var(--color-ember)" },
-  { label: "Aperol Spritz gratis", code: "APEROL", weight: 14, color: "var(--color-brick)" },
-  { label: "Margherita gratis*", code: "MARGHERITA", weight: 6, color: "var(--color-ember)" },
+  { label: "Tiramisù", code: "TIRAMISU", weight: 18, color: "var(--color-brick)" },
+  { label: "10% Lieferung", code: "LIEFERN10", weight: 22, color: "var(--color-ember)" },
+  { label: "Aperol gratis", code: "APEROL", weight: 14, color: "var(--color-brick)" },
+  { label: "Margherita", code: "MARGHERITA", weight: 6, color: "var(--color-ember)" },
   { label: "Caffè gratis", code: "CAFFE", weight: 18, color: "var(--color-brick)" },
   { label: "5% Rabatt", code: "FIVE", weight: 14, color: "var(--color-ember)" },
-  { label: "Beim nächsten Mal!", code: "", weight: 4, color: "var(--color-brick)" },
-  { label: "Nochmal drehen", code: "", weight: 4, color: "var(--color-ember)" },
+  { label: "Nächstes Mal", code: "", weight: 4, color: "var(--color-brick)" },
+  { label: "Nochmal!", code: "", weight: 4, color: "var(--color-ember)" },
 ];
 
 const WHEEL_KEY = "buechel_wheel_v1";
@@ -125,26 +125,25 @@ export function Wheel() {
               const x2 = cx + r * Math.cos(a2);
               const y2 = cy + r * Math.sin(a2);
               const path = `M${cx},${cy} L${x1},${y1} A${r},${r} 0 0,1 ${x2},${y2} Z`;
-              const mid = ((i + 0.5) * segAngle - 90) * (Math.PI / 180);
-              const tx = cx + r * 0.62 * Math.cos(mid);
-              const ty = cy + r * 0.62 * Math.sin(mid);
-              const rot = (i + 0.5) * segAngle;
+              const rot = (i + 0.5) * segAngle - 90;
               return (
                 <g key={i}>
                   <path d={path} fill={p.color} stroke="var(--color-surface)" strokeWidth="2" />
-                  <text
-                    x={tx}
-                    y={ty}
-                    fill="white"
-                    fontSize="11"
-                    fontWeight="600"
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    transform={`rotate(${rot} ${tx} ${ty})`}
-                    className="font-sans"
-                  >
-                    {p.label.length > 18 ? p.label.slice(0, 16) + "…" : p.label}
-                  </text>
+                  <g transform={`rotate(${rot} ${cx} ${cy})`}>
+                    <text
+                      x={cx + r * 0.58}
+                      y={cy}
+                      fill="white"
+                      fontSize="13"
+                      fontWeight="700"
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      style={{ paintOrder: "stroke", stroke: "rgba(0,0,0,0.35)", strokeWidth: 2 }}
+                      className="font-sans"
+                    >
+                      {p.label}
+                    </text>
+                  </g>
                 </g>
               );
             })}
