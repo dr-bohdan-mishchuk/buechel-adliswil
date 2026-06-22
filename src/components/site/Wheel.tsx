@@ -12,7 +12,31 @@ const PRIZES = [
   { label: "Nochmal!", code: "", weight: 4, color: "var(--color-ember)" },
 ];
 
-const WHEEL_KEY = "buechel_wheel_v1";
+export const WHEEL_SEEN_KEY = "buechel_wheel_v1";
+export const WHEEL_PRIZE_KEY = "buechel_wheel_prize_v1";
+const VALID_DAYS = 14;
+
+type StoredPrize = {
+  label: string;
+  code: string;
+  name: string;
+  email: string;
+  wonAt: string; // ISO
+  expiresAt: string; // ISO
+};
+
+export function getStoredPrize(): StoredPrize | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(WHEEL_PRIZE_KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw) as StoredPrize;
+    if (new Date(p.expiresAt).getTime() < Date.now()) return null;
+    return p;
+  } catch {
+    return null;
+  }
+}
 
 function pickPrize() {
   const total = PRIZES.reduce((s, p) => s + p.weight, 0);
@@ -24,37 +48,55 @@ function pickPrize() {
   return 0;
 }
 
+function fmtDate(iso: string) {
+  try {
+    return new Date(iso).toLocaleDateString("de-CH", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  } catch {
+    return iso;
+  }
+}
+
 export function Wheel() {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState<number | null>(null);
+  const [stored, setStored] = useState<StoredPrize | null>(null);
   const controls = useAnimationControls();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const openNow = () => setOpen(true);
+    setStored(getStoredPrize());
+
+    const openNow = () => {
+      setStored(getStoredPrize());
+      setOpen(true);
+    };
     window.addEventListener("open-wheel", openNow);
 
-    const seen = window.localStorage.getItem(WHEEL_KEY);
+    const seen = window.localStorage.getItem(WHEEL_SEEN_KEY);
     if (seen) {
       return () => window.removeEventListener("open-wheel", openNow);
     }
 
+    const trigger = () => {
+      window.localStorage.setItem(WHEEL_SEEN_KEY, "1");
+      document.removeEventListener("mouseleave", onExit);
+      window.removeEventListener("scroll", onScroll);
+      setOpen(true);
+    };
     const onExit = (e: MouseEvent) => {
       if (e.clientY <= 0) trigger();
     };
     const onScroll = () => {
       const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
       if (pct > 0.6) trigger();
-    };
-    const trigger = () => {
-      window.localStorage.setItem(WHEEL_KEY, "1");
-      window.removeEventListener("mouseleave", onExit);
-      window.removeEventListener("scroll", onScroll);
-      setOpen(true);
     };
     document.addEventListener("mouseleave", onExit);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -78,6 +120,27 @@ export function Wheel() {
     });
     setResult(idx);
     setSpinning(false);
+
+    const prize = PRIZES[idx];
+    if (prize.code) {
+      const now = new Date();
+      const expires = new Date(now.getTime() + VALID_DAYS * 24 * 3600 * 1000);
+      const payload: StoredPrize = {
+        label: prize.label,
+        code: prize.code,
+        name,
+        email,
+        wonAt: now.toISOString(),
+        expiresAt: expires.toISOString(),
+      };
+      window.localStorage.setItem(WHEEL_PRIZE_KEY, JSON.stringify(payload));
+      window.localStorage.setItem(WHEEL_SEEN_KEY, "1");
+      setStored(payload);
+      window.dispatchEvent(new Event("wheel-prize-updated"));
+    } else {
+      window.localStorage.setItem(WHEEL_SEEN_KEY, "1");
+      window.dispatchEvent(new Event("wheel-prize-updated"));
+    }
   };
 
   if (!open) return null;
@@ -86,6 +149,70 @@ export function Wheel() {
   const cx = 160;
   const cy = 160;
   const segAngle = 360 / PRIZES.length;
+
+  // If user already has a stored prize and hasn't just spun again, show the "Mein Gewinn" view.
+  if (stored && result === null) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/70 backdrop-blur-sm p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, y: 16 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          className="relative w-full max-w-md rounded-2xl bg-surface shadow-elegant overflow-hidden"
+        >
+          <button
+            onClick={() => setOpen(false)}
+            aria-label="Schliessen"
+            className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-surface-alt text-ink-soft hover:text-ink"
+          >
+            ✕
+          </button>
+          <div className="p-6 text-center">
+            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-brick">
+              Dein Gewinn
+            </p>
+            <h3 className="mt-2 font-display text-2xl font-semibold text-ink">
+              {stored.label}
+            </h3>
+            <p className="mt-1 text-sm text-ink-soft">
+              Gewonnen am {fmtDate(stored.wonAt)} · gültig bis{" "}
+              <strong className="text-ink">{fmtDate(stored.expiresAt)}</strong>
+            </p>
+
+            <div className="mt-5 rounded-xl border border-dashed border-brick bg-brick/5 px-4 py-5">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-ink-soft">
+                Dein Code
+              </p>
+              <div className="mt-2 font-mono text-2xl font-bold tracking-[0.2em] text-brick">
+                {stored.code}
+              </div>
+            </div>
+
+            <div className="mt-5 rounded-lg bg-surface-alt p-4 text-left text-sm text-ink-soft">
+              <p className="font-semibold text-ink mb-2">So löst du ein:</p>
+              <ol className="list-decimal pl-5 space-y-1">
+                <li>Code im Restaurant bei der Bestellung nennen, oder</li>
+                <li>
+                  bei Online-Bestellung im Feld <em>Bemerkungen</em> angeben.
+                </li>
+                <li>Ein Gewinn pro Person. Nicht mit anderen Aktionen kombinierbar.</li>
+              </ol>
+              <p className="mt-3 text-xs">
+                Auf den Namen <strong className="text-ink">{stored.name}</strong> ·{" "}
+                {stored.email}
+              </p>
+            </div>
+
+            <button
+              onClick={() => setOpen(false)}
+              className="mt-5 h-11 w-full rounded-full bg-brick text-sm font-semibold text-brick-foreground hover:bg-brick/90"
+            >
+              Bis bald.
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/70 backdrop-blur-sm p-4">
@@ -110,12 +237,11 @@ export function Wheel() {
             Eine Drehung. Etwas Süsses.
           </h3>
           <p className="mt-2 text-sm text-ink-soft">
-            Mail eintragen, drehen — und beim nächsten Besuch einlösen.
+            Mail eintragen, drehen — und bei deinem nächsten Besuch einlösen.
           </p>
         </div>
 
         <div className="relative mx-auto my-4 h-[320px] w-[320px]">
-          {/* Pointer */}
           <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 h-0 w-0 border-l-[12px] border-r-[12px] border-t-[20px] border-l-transparent border-r-transparent border-t-brick" />
 
           <motion.svg
@@ -184,7 +310,7 @@ export function Wheel() {
               {spinning ? "Drehen …" : "Drehen 🎯"}
             </button>
             <p className="text-center text-[11px] text-ink-soft">
-              Ein Gewinn pro Person. Gültig 7 Tage. Kein Spam, versprochen.
+              Ein Gewinn pro Person. Gültig {VALID_DAYS} Tage. Kein Spam, versprochen.
             </p>
           </form>
         ) : (
@@ -199,7 +325,11 @@ export function Wheel() {
                   {PRIZES[result].code}
                 </div>
                 <p className="text-xs text-ink-soft">
-                  Wir haben dir den Code an <strong>{email}</strong> geschickt.
+                  Code im Restaurant nennen oder bei Online-Bestellung im Feld{" "}
+                  <em>Bemerkungen</em> angeben. Gültig {VALID_DAYS} Tage.
+                </p>
+                <p className="text-xs text-ink-soft">
+                  Eine Kopie geht an <strong>{email}</strong>.
                 </p>
               </>
             ) : (

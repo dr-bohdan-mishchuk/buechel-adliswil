@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { RESTAURANT } from "@/lib/restaurant";
 import logoAsset from "@/assets/logo.png.asset.json";
+import { WHEEL_SEEN_KEY, getStoredPrize } from "./Wheel";
 const logoUrl = logoAsset.url;
 
 const links = [
@@ -14,13 +15,29 @@ const links = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [seen, setSeen] = useState(true);
+  const [hasPrize, setHasPrize] = useState(false);
 
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 16);
     on();
     window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
+
+    const sync = () => {
+      setSeen(!!window.localStorage.getItem(WHEEL_SEEN_KEY));
+      setHasPrize(!!getStoredPrize());
+    };
+    sync();
+    window.addEventListener("wheel-prize-updated", sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("wheel-prize-updated", sync);
+      window.removeEventListener("storage", sync);
+    };
   }, []);
+
+  const showNewWheel = !seen && !hasPrize;
 
   return (
     <header
@@ -55,16 +72,25 @@ export function Nav() {
               {l.label}
             </Link>
           ))}
-          <button
-            type="button"
-            onClick={() => {
-              window.localStorage.removeItem("buechel_wheel_v1");
-              window.dispatchEvent(new Event("open-wheel"));
-            }}
-            className="inline-flex h-10 items-center gap-1.5 rounded-full border border-brick/30 bg-brick/5 px-3 text-sm font-medium text-brick transition-colors hover:bg-brick/10"
-          >
-            🎁 Glücksrad
-          </button>
+          {showNewWheel && (
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("open-wheel"))}
+              className="inline-flex h-10 items-center gap-1.5 rounded-full border border-brick/30 bg-brick/5 px-3 text-sm font-medium text-brick transition-colors hover:bg-brick/10"
+            >
+              🎁 Glücksrad
+            </button>
+          )}
+          {hasPrize && (
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("open-wheel"))}
+              className="inline-flex h-10 items-center gap-1.5 rounded-full border border-brick/40 bg-brick/10 px-3 text-sm font-semibold text-brick transition-colors hover:bg-brick/15"
+              title="Deinen Gewinn anzeigen"
+            >
+              🎟️ Mein Gewinn
+            </button>
+          )}
           <a
             href={RESTAURANT.orderUrl}
             target="_blank"
@@ -130,17 +156,30 @@ export function Nav() {
             >
               Tisch sichern
             </Link>
-            <button
-              type="button"
-              onClick={() => {
-                setOpen(false);
-                window.localStorage.removeItem("buechel_wheel_v1");
-                window.dispatchEvent(new Event("open-wheel"));
-              }}
-              className="inline-flex h-11 items-center justify-center rounded-full border border-brick/30 bg-brick/5 px-5 text-sm font-medium text-brick"
-            >
-              🎁 Glücksrad drehen
-            </button>
+            {showNewWheel && (
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  window.dispatchEvent(new Event("open-wheel"));
+                }}
+                className="inline-flex h-11 items-center justify-center rounded-full border border-brick/30 bg-brick/5 px-5 text-sm font-medium text-brick"
+              >
+                🎁 Glücksrad drehen
+              </button>
+            )}
+            {hasPrize && (
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  window.dispatchEvent(new Event("open-wheel"));
+                }}
+                className="inline-flex h-11 items-center justify-center rounded-full border border-brick/40 bg-brick/10 px-5 text-sm font-semibold text-brick"
+              >
+                🎟️ Mein Gewinn ansehen
+              </button>
+            )}
           </div>
         </div>
       )}
