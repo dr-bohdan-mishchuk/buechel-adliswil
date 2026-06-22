@@ -2,14 +2,14 @@ import { motion, useAnimationControls } from "motion/react";
 import { useEffect, useState } from "react";
 
 const PRIZES = [
-  { label: "Tiramisù gratis", code: "TIRAMISU", weight: 18, color: "var(--color-brick)" },
-  { label: "10% auf Lieferung", code: "LIEFERN10", weight: 22, color: "var(--color-ember)" },
-  { label: "Aperol Spritz gratis", code: "APEROL", weight: 14, color: "var(--color-brick)" },
-  { label: "Margherita gratis*", code: "MARGHERITA", weight: 6, color: "var(--color-ember)" },
+  { label: "Tiramisù", code: "TIRAMISU", weight: 18, color: "var(--color-brick)" },
+  { label: "10% Lieferung", code: "LIEFERN10", weight: 22, color: "var(--color-ember)" },
+  { label: "Aperol gratis", code: "APEROL", weight: 14, color: "var(--color-brick)" },
+  { label: "Margherita", code: "MARGHERITA", weight: 6, color: "var(--color-ember)" },
   { label: "Caffè gratis", code: "CAFFE", weight: 18, color: "var(--color-brick)" },
   { label: "5% Rabatt", code: "FIVE", weight: 14, color: "var(--color-ember)" },
-  { label: "Beim nächsten Mal!", code: "", weight: 4, color: "var(--color-brick)" },
-  { label: "Nochmal drehen", code: "", weight: 4, color: "var(--color-ember)" },
+  { label: "Nächstes Mal", code: "", weight: 4, color: "var(--color-brick)" },
+  { label: "Nochmal!", code: "", weight: 4, color: "var(--color-ember)" },
 ];
 
 const WHEEL_KEY = "buechel_wheel_v1";
