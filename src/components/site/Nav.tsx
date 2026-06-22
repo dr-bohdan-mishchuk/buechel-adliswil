@@ -130,6 +130,17 @@ export function Nav() {
             >
               Tisch sichern
             </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                window.localStorage.removeItem("buechel_wheel_v1");
+                window.dispatchEvent(new Event("open-wheel"));
+              }}
+              className="inline-flex h-11 items-center justify-center rounded-full border border-brick/30 bg-brick/5 px-5 text-sm font-medium text-brick"
+            >
+              🎁 Glücksrad drehen
+            </button>
           </div>
         </div>
       )}
