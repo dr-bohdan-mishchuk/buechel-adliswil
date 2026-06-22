@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { RESTAURANT } from "@/lib/restaurant";
 import logoAsset from "@/assets/logo.png.asset.json";
+import { WHEEL_SEEN_KEY, getStoredPrize } from "./Wheel";
 const logoUrl = logoAsset.url;
 
 const links = [
@@ -14,13 +15,29 @@ const links = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [seen, setSeen] = useState(true);
+  const [hasPrize, setHasPrize] = useState(false);
 
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 16);
     on();
     window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
+
+    const sync = () => {
+      setSeen(!!window.localStorage.getItem(WHEEL_SEEN_KEY));
+      setHasPrize(!!getStoredPrize());
+    };
+    sync();
+    window.addEventListener("wheel-prize-updated", sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("wheel-prize-updated", sync);
+      window.removeEventListener("storage", sync);
+    };
   }, []);
+
+  const showNewWheel = !seen && !hasPrize;
 
   return (
     <header
