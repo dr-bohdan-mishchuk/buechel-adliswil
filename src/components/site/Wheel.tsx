@@ -34,8 +34,14 @@ export function Wheel() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    const openNow = () => setOpen(true);
+    window.addEventListener("open-wheel", openNow);
+
     const seen = window.localStorage.getItem(WHEEL_KEY);
-    if (seen) return;
+    if (seen) {
+      return () => window.removeEventListener("open-wheel", openNow);
+    }
 
     const onExit = (e: MouseEvent) => {
       if (e.clientY <= 0) trigger();
@@ -55,6 +61,7 @@ export function Wheel() {
     return () => {
       document.removeEventListener("mouseleave", onExit);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("open-wheel", openNow);
     };
   }, []);
 
