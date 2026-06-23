@@ -333,18 +333,18 @@ function Index() {
               to="/reservation"
               className="inline-flex h-12 items-center rounded-full bg-brick px-7 text-sm font-semibold text-brick-foreground hover:bg-ember"
             >
-              Tisch reservieren
+              {t("nav.book")}
             </Link>
             <a
               href={RESTAURANT.phoneHref}
               className="inline-flex h-12 items-center gap-3 rounded-full border border-surface/30 px-7 text-sm font-semibold text-surface hover:bg-surface/10"
             >
-              <span>Lieber anrufen</span>
+              <span>{t("cta.callInstead")}</span>
               <span className="font-mono text-ember">{RESTAURANT.phone}</span>
             </a>
           </div>
           <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-surface/50">
-            Auf dem Mobiltelefon öffnet ein Tap die Wähltastatur.
+            {t("cta.mobileHint")}
           </p>
         </div>
       </section>
