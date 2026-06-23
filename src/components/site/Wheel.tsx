@@ -178,19 +178,19 @@ export function Wheel() {
           </button>
           <div className="p-6 text-center">
             <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-brick">
-              Dein Gewinn
+              {t("prize.eyebrow")}
             </p>
             <h3 className="mt-2 font-display text-2xl font-semibold text-ink">
               {stored.label}
             </h3>
             <p className="mt-1 text-sm text-ink-soft">
-              Gewonnen am {fmtDate(stored.wonAt)} · gültig bis{" "}
-              <strong className="text-ink">{fmtDate(stored.expiresAt)}</strong>
+              {t("prize.wonOn")} {fmtDate(stored.wonAt, lang)} · {t("prize.validUntil")}{" "}
+              <strong className="text-ink">{fmtDate(stored.expiresAt, lang)}</strong>
             </p>
 
             <div className="mt-5 rounded-xl border border-dashed border-brick bg-brick/5 px-4 py-5">
               <p className="text-[11px] uppercase tracking-[0.2em] text-ink-soft">
-                Dein Code
+                {t("prize.yourCode")}
               </p>
               <div className="mt-2 font-mono text-2xl font-bold tracking-[0.2em] text-brick">
                 {stored.code}
@@ -198,16 +198,14 @@ export function Wheel() {
             </div>
 
             <div className="mt-5 rounded-lg bg-surface-alt p-4 text-left text-sm text-ink-soft">
-              <p className="font-semibold text-ink mb-2">So löst du ein:</p>
+              <p className="font-semibold text-ink mb-2">{t("prize.howTo")}</p>
               <ol className="list-decimal pl-5 space-y-1">
-                <li>Code im Restaurant bei der Bestellung nennen, oder</li>
-                <li>
-                  bei Online-Bestellung im Feld <em>Bemerkungen</em> angeben.
-                </li>
-                <li>Ein Gewinn pro Person. Nicht mit anderen Aktionen kombinierbar.</li>
+                <li>{t("prize.step1")}</li>
+                <li>{t("prize.step2")}</li>
+                <li>{t("prize.step3")}</li>
               </ol>
               <p className="mt-3 text-xs">
-                Auf den Namen <strong className="text-ink">{stored.name}</strong> ·{" "}
+                {t("prize.onName")} <strong className="text-ink">{stored.name}</strong> ·{" "}
                 {stored.email}
               </p>
             </div>
@@ -216,7 +214,7 @@ export function Wheel() {
               onClick={() => setOpen(false)}
               className="mt-5 h-11 w-full rounded-full bg-brick text-sm font-semibold text-brick-foreground hover:bg-brick/90"
             >
-              Bis bald.
+              {t("wheel.bye")}
             </button>
           </div>
         </motion.div>
@@ -241,14 +239,12 @@ export function Wheel() {
 
         <div className="p-6 pb-2 text-center">
           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-brick">
-            Glücksrad
+            {t("wheel.eyebrow")}
           </p>
           <h3 className="mt-2 font-display text-2xl font-semibold text-ink">
-            Eine Drehung. Etwas Süsses.
+            {t("wheel.title")}
           </h3>
-          <p className="mt-2 text-sm text-ink-soft">
-            Mail eintragen, drehen — und bei deinem nächsten Besuch einlösen.
-          </p>
+          <p className="mt-2 text-sm text-ink-soft">{t("wheel.subtitle")}</p>
         </div>
 
         <div className="relative mx-auto my-4 h-[320px] w-[320px]">
@@ -301,7 +297,7 @@ export function Wheel() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Dein Name"
+              placeholder={t("wheel.name")}
               className="h-11 w-full rounded-md border border-input bg-card px-3 text-sm focus:border-brick focus:outline-none"
             />
             <input
@@ -309,7 +305,7 @@ export function Wheel() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="deine@mail.ch"
+              placeholder={t("wheel.email")}
               className="h-11 w-full rounded-md border border-input bg-card px-3 text-sm focus:border-brick focus:outline-none"
             />
             <button
@@ -317,11 +313,9 @@ export function Wheel() {
               disabled={spinning}
               className="h-12 w-full rounded-full bg-brick text-sm font-semibold text-brick-foreground transition-all hover:bg-brick/90 disabled:opacity-50"
             >
-              {spinning ? "Drehen …" : "Drehen 🎯"}
+              {spinning ? t("wheel.spinning") : t("wheel.spin")}
             </button>
-            <p className="text-center text-[11px] text-ink-soft">
-              Ein Gewinn pro Person. Gültig {VALID_DAYS} Tage. Kein Spam, versprochen.
-            </p>
+            <p className="text-center text-[11px] text-ink-soft">{t("wheel.terms")}</p>
           </form>
         ) : (
           <div className="space-y-3 p-6 pt-2 text-center">
@@ -330,28 +324,23 @@ export function Wheel() {
             </div>
             {PRIZES[result].code ? (
               <>
-                <p className="text-sm text-ink-soft">Dein Code:</p>
+                <p className="text-sm text-ink-soft">{t("wheel.codeLabel")}</p>
                 <div className="mx-auto inline-block rounded-md border border-dashed border-brick bg-brick/5 px-4 py-2 font-mono text-lg font-semibold tracking-widest text-brick">
                   {PRIZES[result].code}
                 </div>
+                <p className="text-xs text-ink-soft">{t("wheel.redeemHint")}</p>
                 <p className="text-xs text-ink-soft">
-                  Code im Restaurant nennen oder bei Online-Bestellung im Feld{" "}
-                  <em>Bemerkungen</em> angeben. Gültig {VALID_DAYS} Tage.
-                </p>
-                <p className="text-xs text-ink-soft">
-                  Eine Kopie geht an <strong>{email}</strong>.
+                  {t("wheel.copy")} <strong>{email}</strong>.
                 </p>
               </>
             ) : (
-              <p className="text-sm text-ink-soft">
-                Komm vorbei — wir freuen uns trotzdem auf dich.
-              </p>
+              <p className="text-sm text-ink-soft">{t("wheel.noWin")}</p>
             )}
             <button
               onClick={() => setOpen(false)}
               className="mt-4 h-11 w-full rounded-full border border-border bg-surface text-sm font-medium text-ink hover:bg-surface-alt"
             >
-              Bis bald.
+              {t("wheel.bye")}
             </button>
           </div>
         )}
