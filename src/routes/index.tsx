@@ -5,6 +5,7 @@ import { Footer } from "@/components/site/Footer";
 import { Wheel } from "@/components/site/Wheel";
 import { DISHES, TAG_LABEL } from "@/lib/menu-data";
 import { RESTAURANT } from "@/lib/restaurant";
+import { useI18n } from "@/lib/i18n";
 import heroAsset from "@/assets/hero-cordon-bleu.png.asset.json";
 import pizzaAsset from "@/assets/dish-pizza.jpg.asset.json";
 import pastaAsset from "@/assets/dish-pasta.webp.asset.json";
@@ -143,6 +144,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { t } = useI18n();
   const signatures = DISHES.filter((d) => d.tags.includes("signature")).slice(0, 6);
 
   return (
@@ -167,7 +169,7 @@ function Index() {
             transition={{ delay: 0.1 }}
             className="font-mono text-[11px] uppercase tracking-[0.3em] text-ember"
           >
-            Adliswil · seit 1998
+            {t("hero.eyebrow")}
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -175,10 +177,10 @@ function Index() {
             transition={{ delay: 0.15, duration: 0.6 }}
             className="mt-4 max-w-3xl font-display text-[clamp(2.5rem,7vw,5.5rem)] font-semibold leading-[1.02] tracking-tight text-surface"
           >
-            Holzofen,
+            {t("hero.t1")}
             <br />
-            Handwerk,
-            <span className="block text-ember">Hunger.</span>
+            {t("hero.t2")}
+            <span className="block text-ember">{t("hero.t3")}</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -186,8 +188,7 @@ function Index() {
             transition={{ delay: 0.3 }}
             className="mt-6 max-w-xl text-base leading-relaxed text-surface/85 md:text-lg"
           >
-            Pizza aus dem 380-Grad-Ofen, Cordon Bleu wie früher — nur besser.
-            Mitten in Adliswil.
+            {t("hero.subtitle")}
           </motion.p>
 
           <motion.div
@@ -202,20 +203,20 @@ function Index() {
               rel="noopener noreferrer"
               className="group inline-flex h-12 items-center gap-2 rounded-full bg-brick px-6 text-sm font-semibold text-brick-foreground shadow-elegant transition-all hover:bg-ember"
             >
-              Essen bestellen
+              {t("cta.order")}
               <span className="transition-transform group-hover:translate-x-0.5">→</span>
             </a>
             <Link
               to="/reservation"
               className="inline-flex h-12 items-center rounded-full border border-surface/30 bg-surface/10 px-6 text-sm font-semibold text-surface backdrop-blur-sm hover:bg-surface/20"
             >
-              Tisch sichern
+              {t("cta.book")}
             </Link>
             <Link
               to="/menu"
               className="inline-flex h-12 items-center rounded-full border border-surface/20 px-6 text-sm font-semibold text-surface/90 hover:bg-surface/10"
             >
-              Menü öffnen
+              {t("cta.openMenu")}
             </Link>
           </motion.div>
 
@@ -231,10 +232,10 @@ function Index() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-basilico opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-basilico" />
               </span>
-              Heute offen bis 23:00
+              {t("hero.openUntil")}
             </span>
-            <span>12 Plätze frei</span>
-            <span>Lieferung ~25 Min.</span>
+            <span>{t("hero.seatsFree")}</span>
+            <span>{t("hero.delivery")}</span>
           </motion.div>
         </div>
       </section>
