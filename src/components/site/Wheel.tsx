@@ -1,5 +1,6 @@
 import { motion, useAnimationControls } from "motion/react";
 import { useEffect, useState } from "react";
+import { useI18n } from "@/lib/i18n";
 
 const PRIZES = [
   { label: "Tiramisù", code: "TIRAMISU", weight: 18, color: "var(--color-brick)" },
@@ -48,9 +49,17 @@ function pickPrize() {
   return 0;
 }
 
-function fmtDate(iso: string) {
+function fmtDate(iso: string, lang: string = "de-CH") {
+  const locales: Record<string, string> = {
+    de: "de-CH",
+    en: "en-GB",
+    it: "it-CH",
+    fr: "fr-CH",
+    rm: "rm-CH",
+    uk: "uk-UA",
+  };
   try {
-    return new Date(iso).toLocaleDateString("de-CH", {
+    return new Date(iso).toLocaleDateString(locales[lang] ?? "de-CH", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -61,6 +70,7 @@ function fmtDate(iso: string) {
 }
 
 export function Wheel() {
+  const { t, lang } = useI18n();
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
