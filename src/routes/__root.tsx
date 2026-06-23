@@ -12,22 +12,22 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { RESTAURANT } from "@/lib/restaurant";
+import { I18nProvider, useI18n } from "@/lib/i18n";
 
 function NotFoundComponent() {
+  const { t } = useI18n();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="font-display text-7xl font-semibold text-ink">404</h1>
-        <h2 className="mt-4 font-display text-xl font-medium text-ink">Seite nicht gefunden</h2>
-        <p className="mt-2 text-sm text-ink-soft">
-          Diese Seite gibt es nicht — der Holzofen schon.
-        </p>
+        <h2 className="mt-4 font-display text-xl font-medium text-ink">{t("404.title")}</h2>
+        <p className="mt-2 text-sm text-ink-soft">{t("404.subtitle")}</p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex h-11 items-center rounded-full bg-brick px-5 text-sm font-medium text-brick-foreground transition-colors hover:bg-brick/90"
           >
-            Zurück zur Startseite
+            {t("404.back")}
           </Link>
         </div>
       </div>
@@ -173,7 +173,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <I18nProvider>
+        <Outlet />
+      </I18nProvider>
     </QueryClientProvider>
   );
 }

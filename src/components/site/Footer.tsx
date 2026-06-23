@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { RESTAURANT } from "@/lib/restaurant";
+import { useI18n } from "@/lib/i18n";
 
 export function Footer() {
+  const { t } = useI18n();
   return (
     <footer className="mt-32 border-t border-border bg-surface-alt">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-4 lg:px-8">
@@ -10,8 +12,7 @@ export function Footer() {
             Büchel
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-soft">
-            Holzofen-Pizza, hausgemachte Pasta und das beste Cordon Bleu von Adliswil.
-            Seit 1998 — und wir bleiben.
+            {t("footer.about")}
           </p>
           <p className="mt-6 font-mono text-xs uppercase tracking-widest text-ink-soft">
             {RESTAURANT.street} · {RESTAURANT.postal} {RESTAURANT.city}
@@ -20,7 +21,7 @@ export function Footer() {
 
         <div>
           <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-ink-soft">
-            Besuch
+            {t("footer.visit")}
           </h4>
           <ul className="mt-4 space-y-2 text-sm text-ink">
             {RESTAURANT.hours.map((h) => (
@@ -37,7 +38,7 @@ export function Footer() {
 
         <div>
           <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-ink-soft">
-            Kontakt
+            {t("footer.contact")}
           </h4>
           <ul className="mt-4 space-y-2 text-sm">
             <li>
@@ -52,7 +53,7 @@ export function Footer() {
             </li>
             <li className="pt-2">
               <Link to="/reservation" className="text-brick font-medium hover:underline">
-                Tisch reservieren →
+                {t("footer.book")}
               </Link>
             </li>
           </ul>
@@ -61,8 +62,8 @@ export function Footer() {
 
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-3 px-5 py-6 text-xs text-ink-soft md:flex-row md:items-center lg:px-8">
-          <p>© {new Date().getFullYear()} Restaurant Büchel. Geschlossen am Montag, weil auch wir mal Pizza essen wollen.</p>
-          <p className="font-mono uppercase tracking-widest">Made with 🔥 in Adliswil</p>
+          <p>© {new Date().getFullYear()} {t("footer.legal")}</p>
+          <p className="font-mono uppercase tracking-widest">{t("footer.made")}</p>
         </div>
       </div>
     </footer>

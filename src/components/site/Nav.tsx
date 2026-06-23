@@ -3,20 +3,23 @@ import { useEffect, useState } from "react";
 import { RESTAURANT } from "@/lib/restaurant";
 import logoAsset from "@/assets/logo.png.asset.json";
 import { WHEEL_SEEN_KEY, getStoredPrize } from "./Wheel";
+import { LangSwitcher } from "./LangSwitcher";
+import { useI18n } from "@/lib/i18n";
 const logoUrl = logoAsset.url;
 
-const links = [
-  { to: "/menu", label: "Menü" },
-  { to: "/reservation", label: "Reservieren" },
-  { to: "/faq", label: "FAQ" },
-  { to: "/kontakt", label: "Kontakt" },
-] as const;
-
 export function Nav() {
+  const { t } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [seen, setSeen] = useState(true);
   const [hasPrize, setHasPrize] = useState(false);
+
+  const links = [
+    { to: "/menu", label: t("nav.menu") },
+    { to: "/reservation", label: t("nav.reservation") },
+    { to: "/faq", label: t("nav.faq") },
+    { to: "/kontakt", label: t("nav.contact") },
+  ] as const;
 
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 16);
@@ -37,6 +40,12 @@ export function Nav() {
     };
   }, []);
 
+  // Lifecycle:
+  // - New visitor: showNewWheel = true → can spin once.
+  // - After spin: WHEEL_SEEN_KEY is set permanently → showNewWheel becomes false forever.
+  // - If they won: hasPrize is true for 14 days → "Mein Gewinn" button visible.
+  // - After 14 days: getStoredPrize() returns null → hasPrize=false, button disappears,
+  //   AND showNewWheel stays false because seen=true → user can never play again.
   const showNewWheel = !seen && !hasPrize;
 
   return (
@@ -61,7 +70,7 @@ export function Nav() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-6 md:flex">
           {links.map((l) => (
             <Link
               key={l.to}
@@ -78,7 +87,7 @@ export function Nav() {
               onClick={() => window.dispatchEvent(new Event("open-wheel"))}
               className="inline-flex h-10 items-center gap-1.5 rounded-full border border-brick/30 bg-brick/5 px-3 text-sm font-medium text-brick transition-colors hover:bg-brick/10"
             >
-              🎁 Glücksrad
+              {t("nav.wheel")}
             </button>
           )}
           {hasPrize && (
@@ -86,9 +95,9 @@ export function Nav() {
               type="button"
               onClick={() => window.dispatchEvent(new Event("open-wheel"))}
               className="inline-flex h-10 items-center gap-1.5 rounded-full border border-brick/40 bg-brick/10 px-3 text-sm font-semibold text-brick transition-colors hover:bg-brick/15"
-              title="Deinen Gewinn anzeigen"
+              title={t("nav.prizeLong")}
             >
-              🎟️ Mein Gewinn
+              {t("nav.prize")}
             </button>
           )}
           <a
@@ -97,18 +106,19 @@ export function Nav() {
             rel="noopener noreferrer"
             className="inline-flex h-10 items-center rounded-full border border-ink/15 px-4 text-sm font-medium text-ink transition-colors hover:border-brick hover:text-brick"
           >
-            Essen bestellen
+            {t("nav.order")}
           </a>
           <Link
             to="/reservation"
             className="inline-flex h-10 items-center rounded-full bg-brick px-5 text-sm font-medium text-brick-foreground shadow-sm transition-all hover:bg-brick/90 hover:shadow"
           >
-            Tisch sichern
+            {t("nav.book")}
           </Link>
+          <LangSwitcher />
         </nav>
 
         <button
-          aria-label="Menü öffnen"
+          aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
           onClick={() => setOpen(!open)}
           className="md:hidden flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface"
         >
@@ -147,14 +157,14 @@ export function Nav() {
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex h-11 items-center justify-center rounded-full border border-ink/15 px-5 text-sm font-medium text-ink"
             >
-              Essen bestellen
+              {t("nav.order")}
             </a>
             <Link
               to="/reservation"
               onClick={() => setOpen(false)}
               className="inline-flex h-11 items-center justify-center rounded-full bg-brick px-5 text-sm font-medium text-brick-foreground"
             >
-              Tisch sichern
+              {t("nav.book")}
             </Link>
             {showNewWheel && (
               <button
@@ -165,7 +175,7 @@ export function Nav() {
                 }}
                 className="inline-flex h-11 items-center justify-center rounded-full border border-brick/30 bg-brick/5 px-5 text-sm font-medium text-brick"
               >
-                🎁 Glücksrad drehen
+                {t("nav.wheelLong")}
               </button>
             )}
             {hasPrize && (
@@ -177,9 +187,10 @@ export function Nav() {
                 }}
                 className="inline-flex h-11 items-center justify-center rounded-full border border-brick/40 bg-brick/10 px-5 text-sm font-semibold text-brick"
               >
-                🎟️ Mein Gewinn ansehen
+                {t("nav.prizeLong")}
               </button>
             )}
+            <LangSwitcher variant="mobile" />
           </div>
         </div>
       )}
