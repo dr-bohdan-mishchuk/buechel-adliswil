@@ -5,10 +5,12 @@ import logoAsset from "@/assets/logo.png.asset.json";
 import { WHEEL_SEEN_KEY, getStoredPrize } from "./Wheel";
 import { LangSwitcher } from "./LangSwitcher";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/hooks/use-auth";
 const logoUrl = logoAsset.url;
 
 export function Nav() {
   const { t } = useI18n();
+  const { isStaff } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [seen, setSeen] = useState(true);
@@ -114,6 +116,14 @@ export function Nav() {
           >
             {t("nav.book")}
           </Link>
+          {isStaff && (
+            <Link
+              to="/admin"
+              className="inline-flex h-10 items-center rounded-full border border-ink/15 px-3 text-xs font-medium text-ink-soft hover:border-brick hover:text-brick"
+            >
+              Admin
+            </Link>
+          )}
           <LangSwitcher />
         </nav>
 
