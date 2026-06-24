@@ -238,11 +238,13 @@ function ReservationPage() {
                 rows={3}
                 className="w-full rounded-md border border-input bg-card px-4 py-3 text-sm focus:border-brick focus:outline-none"
               />
+              {err && <p className="text-sm text-brick">{err}</p>}
               <button
                 type="submit"
-                className="h-12 w-full rounded-full bg-brick text-sm font-semibold text-brick-foreground transition-all hover:bg-ember"
+                disabled={busy}
+                className="h-12 w-full rounded-full bg-brick text-sm font-semibold text-brick-foreground transition-all hover:bg-ember disabled:opacity-50"
               >
-                Tisch bestätigen
+                {busy ? "…" : "Tisch bestätigen"}
               </button>
               <p className="text-center text-[11px] text-ink-soft">
                 Mit dem Klick stimmst du unserer Reservationsregelung zu.
