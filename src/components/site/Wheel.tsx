@@ -1,6 +1,7 @@
 import { motion, useAnimationControls } from "motion/react";
 import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
 
 const PRIZES = [
   { label: "Tiramisù", code: "TIRAMISU", weight: 18, color: "var(--color-brick)" },
@@ -132,9 +133,25 @@ export function Wheel() {
     setSpinning(false);
 
     const prize = PRIZES[idx];
+    const now = new Date();
+    const expires = new Date(now.getTime() + VALID_DAYS * 24 * 3600 * 1000);
+
+    // Persist to DB (fire-and-forget — local copy is still authoritative for UX)
+    supabase
+      .from("wheel_spins")
+      .insert({
+        name,
+        email,
+        prize_label: prize.label,
+        prize_code: prize.code || null,
+        is_win: !!prize.code,
+        expires_at: expires.toISOString(),
+      })
+      .then(({ error }) => {
+        if (error) console.warn("[wheel] could not record spin:", error.message);
+      });
+
     if (prize.code) {
-      const now = new Date();
-      const expires = new Date(now.getTime() + VALID_DAYS * 24 * 3600 * 1000);
       const payload: StoredPrize = {
         label: prize.label,
         code: prize.code,
