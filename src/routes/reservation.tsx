@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/reservation")({
   head: () => ({
@@ -46,15 +47,31 @@ function ReservationPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
 
   const goStep2 = (e: React.FormEvent) => {
     e.preventDefault();
     setStep(2);
   };
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: wire to createReservation server fn when Lovable Cloud is enabled
+    setErr(null);
+    setBusy(true);
+    const { error } = await supabase.from("reservations").insert({
+      reservation_date: date,
+      reservation_time: time,
+      guests,
+      name,
+      phone,
+      note: note || null,
+    });
+    setBusy(false);
+    if (error) {
+      setErr(error.message);
+      return;
+    }
     setStep(3);
   };
 
