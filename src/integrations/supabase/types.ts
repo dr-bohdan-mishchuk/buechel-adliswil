@@ -14,16 +14,222 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      menu_categories: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          label: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      menu_items: {
+        Row: {
+          available: boolean
+          category_id: string
+          created_at: string
+          description: string
+          id: string
+          image_url: string | null
+          name: string
+          price: number
+          sort_order: number
+          tags: string[]
+          updated_at: string
+        }
+        Insert: {
+          available?: boolean
+          category_id: string
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          name: string
+          price: number
+          sort_order?: number
+          tags?: string[]
+          updated_at?: string
+        }
+        Update: {
+          available?: boolean
+          category_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          price?: number
+          sort_order?: number
+          tags?: string[]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "menu_items_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "menu_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      reservations: {
+        Row: {
+          created_at: string
+          email: string | null
+          guests: number
+          id: string
+          name: string
+          note: string | null
+          phone: string
+          reservation_date: string
+          reservation_time: string
+          status: Database["public"]["Enums"]["reservation_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          guests: number
+          id?: string
+          name: string
+          note?: string | null
+          phone: string
+          reservation_date: string
+          reservation_time: string
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          guests?: number
+          id?: string
+          name?: string
+          note?: string | null
+          phone?: string
+          reservation_date?: string
+          reservation_time?: string
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wheel_spins: {
+        Row: {
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          is_win: boolean
+          name: string
+          prize_code: string | null
+          prize_label: string
+          redeemed: boolean
+          redeemed_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          expires_at: string
+          id?: string
+          is_win?: boolean
+          name: string
+          prize_code?: string | null
+          prize_label: string
+          redeemed?: boolean
+          redeemed_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          is_win?: boolean
+          name?: string
+          prize_code?: string | null
+          prize_label?: string
+          redeemed?: boolean
+          redeemed_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      claim_first_admin: { Args: never; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "staff"
+      reservation_status:
+        | "pending"
+        | "confirmed"
+        | "cancelled"
+        | "completed"
+        | "noshow"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +356,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "staff"],
+      reservation_status: [
+        "pending",
+        "confirmed",
+        "cancelled",
+        "completed",
+        "noshow",
+      ],
+    },
   },
 } as const
