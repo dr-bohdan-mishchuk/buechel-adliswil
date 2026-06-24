@@ -47,12 +47,12 @@ function AdminLayout() {
     return <NoAccess email={user?.email ?? ""} />;
   }
 
-  const links = [
+  const links: Array<{ to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }> = [
     { to: "/admin", label: t("admin.nav.dashboard"), icon: LayoutDashboard, exact: true },
     { to: "/admin/menu", label: t("admin.nav.menu"), icon: UtensilsCrossed },
     { to: "/admin/reservations", label: t("admin.nav.reservations"), icon: CalendarClock },
     { to: "/admin/wheel", label: t("admin.nav.wheel"), icon: Gift },
-  ] as const;
+  ];
 
   const signOut = async () => {
     await supabase.auth.signOut();
