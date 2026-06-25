@@ -1,12 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { adminT } from "@/lib/admin-i18n";
+import { seedMockData, clearMockData } from "@/lib/seed-mock";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
   component: Dashboard,
 });
+
 
 type Stats = {
   resToday: number;
