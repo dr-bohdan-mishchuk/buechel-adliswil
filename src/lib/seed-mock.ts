@@ -56,7 +56,7 @@ export type SeedResult = {
 export async function seedMockData(): Promise<SeedResult> {
   try {
     // --- Reservations: 8 past, 12 upcoming ---
-    const reservations = [] as Array<Record<string, unknown>>;
+    const reservations: ReservationInsert[] = [];
     const statusesPast = ["completed", "completed", "completed", "noshow", "cancelled"] as const;
     const statusesFuture = ["pending", "confirmed", "confirmed", "confirmed", "pending"] as const;
 
@@ -71,7 +71,7 @@ export async function seedMockData(): Promise<SeedResult> {
         reservation_date: dateOffset(-Math.floor(1 + Math.random() * 20)),
         reservation_time: `${pad(17 + Math.floor(Math.random() * 5))}:${pick(["00", "15", "30", "45"])}:00`,
         note: pick(NOTES),
-        status: pick(statusesPast as unknown as string[]),
+        status: pick([...statusesPast]) as ReservationInsert["status"],
       });
     }
     for (let i = 0; i < 12; i++) {
@@ -85,7 +85,7 @@ export async function seedMockData(): Promise<SeedResult> {
         reservation_date: dateOffset(Math.floor(Math.random() * 21)),
         reservation_time: `${pad(17 + Math.floor(Math.random() * 5))}:${pick(["00", "15", "30", "45"])}:00`,
         note: pick(NOTES),
-        status: pick(statusesFuture as unknown as string[]),
+        status: pick([...statusesFuture]) as ReservationInsert["status"],
       });
     }
 
@@ -93,7 +93,7 @@ export async function seedMockData(): Promise<SeedResult> {
     if (resErr) throw resErr;
 
     // --- Wheel spins: 30 entries ---
-    const spins: Array<Record<string, unknown>> = [];
+    const spins: SpinInsert[] = [];
     for (let i = 0; i < 30; i++) {
       const first = pick(FIRST_NAMES);
       const last = pick(LAST_NAMES);
