@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { RESTAURANT } from "@/lib/restaurant";
 import { I18nProvider, useI18n } from "@/lib/i18n";
+import { Wheel } from "@/components/site/Wheel";
 
 function NotFoundComponent() {
   const { t } = useI18n();
@@ -175,6 +176,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
         <Outlet />
+        <Wheel />
       </I18nProvider>
     </QueryClientProvider>
   );
