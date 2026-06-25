@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
-import { Wheel } from "@/components/site/Wheel";
+
 import { DISHES, TAG_LABEL } from "@/lib/menu-data";
 import { RESTAURANT } from "@/lib/restaurant";
 import { useI18n } from "@/lib/i18n";
