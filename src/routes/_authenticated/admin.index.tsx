@@ -26,6 +26,35 @@ function Dashboard() {
   const t = (k: string) => adminT(lang, k);
   const [s, setS] = useState<Stats | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [seedBusy, setSeedBusy] = useState<"seed" | "clear" | null>(null);
+  const [seedMsg, setSeedMsg] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
+
+  const refresh = useCallback(() => setReloadKey((k) => k + 1), []);
+
+  const handleSeed = async () => {
+    setSeedBusy("seed");
+    setSeedMsg(null);
+    const r = await seedMockData();
+    setSeedBusy(null);
+    setSeedMsg(
+      r.error
+        ? `❌ ${r.error}`
+        : `✓ ${r.reservations} ${t("admin.nav.reservations")}, ${r.spins} ${t("admin.nav.wheel")}`,
+    );
+    refresh();
+  };
+
+  const handleClear = async () => {
+    if (!window.confirm(t("admin.menu.confirmDelete"))) return;
+    setSeedBusy("clear");
+    setSeedMsg(null);
+    const r = await clearMockData();
+    setSeedBusy(null);
+    setSeedMsg(r.error ? `❌ ${r.error}` : `✓ ${t("admin.deleted")}`);
+    refresh();
+  };
+
 
   useEffect(() => {
     (async () => {
