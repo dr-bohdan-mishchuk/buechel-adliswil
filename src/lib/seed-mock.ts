@@ -1,4 +1,9 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
+
+type ReservationInsert = Database["public"]["Tables"]["reservations"]["Insert"];
+type SpinInsert = Database["public"]["Tables"]["wheel_spins"]["Insert"];
+
 
 const FIRST_NAMES = [
   "Anna", "Marco", "Elena", "Lukas", "Sofia", "Jonas", "Mia", "Noah",
