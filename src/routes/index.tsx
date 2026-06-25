@@ -550,7 +550,6 @@ function Index() {
       </section>
 
       <Footer />
-      <Wheel />
     </div>
   );
 }
