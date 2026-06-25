@@ -102,7 +102,8 @@ function Dashboard() {
         setErr(e instanceof Error ? e.message : String(e));
       }
     })();
-  }, []);
+  }, [reloadKey]);
+
 
   if (err) return <p className="text-sm text-brick">{err}</p>;
   if (!s) return <p className="text-sm text-ink-soft">…</p>;
