@@ -175,7 +175,9 @@ function NoAccess({ email }: { email: string }) {
   };
 
   return (
-    <div className="min-h-screen w-full bg-surface flex items-center justify-center px-5">
+    <div className="min-h-screen w-full bg-surface flex flex-col items-center justify-center px-5">
+      <div className="absolute top-4 right-5"><LangSwitcher /></div>
+
       <div className="max-w-md w-full rounded-2xl bg-card p-8 shadow-card">
         <h1 className="font-display text-2xl font-semibold text-ink">
           {t("admin.noAccess")}

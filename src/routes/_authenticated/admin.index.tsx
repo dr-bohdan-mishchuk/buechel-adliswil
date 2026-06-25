@@ -1,12 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { adminT } from "@/lib/admin-i18n";
+import { seedMockData, clearMockData } from "@/lib/seed-mock";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
   component: Dashboard,
 });
+
 
 type Stats = {
   resToday: number;
@@ -24,6 +26,35 @@ function Dashboard() {
   const t = (k: string) => adminT(lang, k);
   const [s, setS] = useState<Stats | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [seedBusy, setSeedBusy] = useState<"seed" | "clear" | null>(null);
+  const [seedMsg, setSeedMsg] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
+
+  const refresh = useCallback(() => setReloadKey((k) => k + 1), []);
+
+  const handleSeed = async () => {
+    setSeedBusy("seed");
+    setSeedMsg(null);
+    const r = await seedMockData();
+    setSeedBusy(null);
+    setSeedMsg(
+      r.error
+        ? `❌ ${r.error}`
+        : `✓ ${r.reservations} ${t("admin.nav.reservations")}, ${r.spins} ${t("admin.nav.wheel")}`,
+    );
+    refresh();
+  };
+
+  const handleClear = async () => {
+    if (!window.confirm(t("admin.menu.confirmDelete"))) return;
+    setSeedBusy("clear");
+    setSeedMsg(null);
+    const r = await clearMockData();
+    setSeedBusy(null);
+    setSeedMsg(r.error ? `❌ ${r.error}` : `✓ ${t("admin.deleted")}`);
+    refresh();
+  };
+
 
   useEffect(() => {
     (async () => {
@@ -71,7 +102,8 @@ function Dashboard() {
         setErr(e instanceof Error ? e.message : String(e));
       }
     })();
-  }, []);
+  }, [reloadKey]);
+
 
   if (err) return <p className="text-sm text-brick">{err}</p>;
   if (!s) return <p className="text-sm text-ink-soft">…</p>;
@@ -84,7 +116,29 @@ function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-3xl font-semibold text-ink">{t("admin.dash.title")}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="font-display text-3xl font-semibold text-ink">{t("admin.dash.title")}</h1>
+        <div className="flex flex-wrap items-center gap-2">
+          {seedMsg && <span className="text-xs text-ink-soft">{seedMsg}</span>}
+          <button
+            type="button"
+            onClick={handleSeed}
+            disabled={seedBusy !== null}
+            className="inline-flex h-9 items-center rounded-full border border-brick/30 bg-brick/5 px-3 text-xs font-medium text-brick hover:bg-brick/10 disabled:opacity-50"
+          >
+            {seedBusy === "seed" ? "…" : "🎲 Mock-Daten einfügen"}
+          </button>
+          <button
+            type="button"
+            onClick={handleClear}
+            disabled={seedBusy !== null}
+            className="inline-flex h-9 items-center rounded-full border border-border px-3 text-xs font-medium text-ink-soft hover:text-brick hover:border-brick disabled:opacity-50"
+          >
+            {seedBusy === "clear" ? "…" : "🧹 Mock-Daten löschen"}
+          </button>
+        </div>
+      </div>
+
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {cards.map((c) => (
