@@ -4,6 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useI18n } from "@/lib/i18n";
 import { adminT } from "@/lib/admin-i18n";
+import { LangSwitcher } from "@/components/site/LangSwitcher";
+
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
