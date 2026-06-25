@@ -116,7 +116,29 @@ function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-3xl font-semibold text-ink">{t("admin.dash.title")}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="font-display text-3xl font-semibold text-ink">{t("admin.dash.title")}</h1>
+        <div className="flex flex-wrap items-center gap-2">
+          {seedMsg && <span className="text-xs text-ink-soft">{seedMsg}</span>}
+          <button
+            type="button"
+            onClick={handleSeed}
+            disabled={seedBusy !== null}
+            className="inline-flex h-9 items-center rounded-full border border-brick/30 bg-brick/5 px-3 text-xs font-medium text-brick hover:bg-brick/10 disabled:opacity-50"
+          >
+            {seedBusy === "seed" ? "…" : "🎲 Mock-Daten einfügen"}
+          </button>
+          <button
+            type="button"
+            onClick={handleClear}
+            disabled={seedBusy !== null}
+            className="inline-flex h-9 items-center rounded-full border border-border px-3 text-xs font-medium text-ink-soft hover:text-brick hover:border-brick disabled:opacity-50"
+          >
+            {seedBusy === "clear" ? "…" : "🧹 Mock-Daten löschen"}
+          </button>
+        </div>
+      </div>
+
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {cards.map((c) => (
