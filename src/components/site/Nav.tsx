@@ -42,13 +42,11 @@ export function Nav() {
     };
   }, []);
 
-  // Lifecycle:
-  // - New visitor: showNewWheel = true → can spin once.
-  // - After spin: WHEEL_SEEN_KEY is set permanently → showNewWheel becomes false forever.
-  // - If they won: hasPrize is true for 14 days → "Mein Gewinn" button visible.
-  // - After 14 days: getStoredPrize() returns null → hasPrize=false, button disappears,
-  //   AND showNewWheel stays false because seen=true → user can never play again.
-  const showNewWheel = !seen && !hasPrize;
+  // DEMO MODE: keep the wheel button visible for everyone so the client can try it.
+  // Original gating: const showNewWheel = !seen && !hasPrize;
+  // To re-enable, swap the line below back.
+  const showNewWheel = !hasPrize;
+
 
   return (
     <header
