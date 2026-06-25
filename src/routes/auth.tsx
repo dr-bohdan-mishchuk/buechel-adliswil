@@ -73,11 +73,13 @@ function AuthPage() {
 
   return (
     <div className="min-h-screen bg-surface flex flex-col">
-      <header className="px-5 py-4">
+      <header className="px-5 py-4 flex items-center justify-between">
         <Link to="/" className="text-sm text-ink-soft hover:text-brick">
           ← Restaurant Büchel
         </Link>
+        <LangSwitcher />
       </header>
+
       <main className="flex-1 flex items-center justify-center px-5 pb-16">
         <div className="w-full max-w-sm rounded-2xl bg-card p-8 shadow-card">
           <h1 className="font-display text-3xl font-semibold text-ink">
